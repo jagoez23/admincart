@@ -20,7 +20,7 @@
         {
             Snackbar.show({
                 text: msg.toUpperCase(),
-                actionText: 'Exit',
+                actionText: 'CERRAR',
                 actionTextColor: '#fff',
                 backgroundColor: option == 1 ? '#3b3f5c' : '#e7515a',
                 pos: 'top-right'
