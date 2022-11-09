@@ -2,11 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Requests\CategoryRequest;
 use Livewire\Component;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+
 
 class CategoriesController extends Component
 {
@@ -46,21 +48,29 @@ class CategoriesController extends Component
         $this->name = $record->name;
         $this->selected_id = $record->id;
         $this->image = null;
-
         $this->emit('show-modal', 'show modal!');
     }
 
     public function Store()
     {
-        $rules = [
+        sleep(1);
+
+        $this->validate(Category::rules($this->selected_id),Category::$messages);
+
+        $category = Category::updatedOrCreate(
+            ['id' => $this->selected_id],
+            ['name' => $this->name]
+        );
+
+        /*$rules = [
             'name' => 'required|unique:categories|min:3'
         ];
         $messages = [
             'name.required' => 'El nombre de la categoría es requerido',
-            'name.unique' => 'Ya existe el nombre de la categoría',
+            'name.unique' => 'El nombre de la categoría ya existe',
             'name.min' => 'El nombre de la categoría debe tener al menos 3 caracteres'
         ];
-        $this->validate($rules, $messages);
+        $this->validate($rules, $messages);*/
 
         $category = Category::create([
             'name' => $this->name
@@ -75,12 +85,12 @@ class CategoriesController extends Component
 
         }
         $this->resetUI();
-        $this->emit('category-added', 'Categoría actualizada');
+        $this->emit('category-added', 'Categoría creada');
     }
 
     public function Update()
     {
-        $rules = [
+        /*$rules = [
             'name' => "required|min:3|unique:categories,name,{$this->selected_id}"
         ];
         $messages = [
@@ -88,7 +98,17 @@ class CategoriesController extends Component
             'name.min' => 'El nombre de la categoria debe tener minímo 3 caracteres',
             'name.unique' => 'El nombre de la categoria ya existe',
         ];
-        $this->validate($rules, $messages);
+        $this->validate($rules, $messages);*/
+
+        sleep(1);
+
+        $this->validate(Category::rules($this->selected_id),Category::$messages);
+
+        $category = Category::updatedOrCreate(
+            ['id' => $this->selected_id],
+            ['name' => $this->name]
+        );
+
 
         $category = Category::find($this->selected_id);
         $category->update([
@@ -129,7 +149,6 @@ class CategoriesController extends Component
         {
             unlink('storage/categories/' . $imageName);
         }
-
         $this->resetUI();
         $this->emit('category-deleted', 'Categoría eliminada');
 
