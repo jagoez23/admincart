@@ -14,6 +14,25 @@ class Category extends Model
         'image',
     ];
 
+    public static function rules($id)
+    {
+        if($id <=0) {
+            return [
+                'name' => 'required|unique:categories|min:3'
+            ];
+        }else{
+            return [
+                'name' => 'required|unique:categories|min:3'
+            ];
+        }
+    }
+
+    public static $messages = [
+            'name.required' => 'El nombre de la categoría es requerido',
+            'name.unique' => 'El nombre de la categoría ya existe',
+            'name.min' => 'El nombre de la categoría debe tener al menos 3 caracteres'
+    ];
+
     //función para poder eliminar productos que esten asigandos a una categoria
 
    public function products()

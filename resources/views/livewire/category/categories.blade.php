@@ -15,6 +15,8 @@
             </div>
             @include('common.searchbox')
 
+            {{$categories->links()}}
+
             <div class="widget-content">
                 <div class="table-responsive">
                     <table class="table table-bordered table striped mt-1">
